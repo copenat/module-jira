@@ -224,6 +224,7 @@ public type User record {
     string locale = "";
 };
 
+
 # Represents a Jira issue type.
 # + resource_path - API resource URL
 # + id - Issue type id

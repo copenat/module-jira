@@ -493,8 +493,11 @@ function test_getIssue() {
     }
 }
 
+
+
 @test:Config {
-    dependsOn: ["test_getIssue", "test_addCommentToIssue", "test_createIssueWithExtraFields"]
+    dependsOn: ["test_getIssue", "test_addCommentToIssue", 
+                "test_createIssueWithExtraFields", "test_getIssueLink", "test_updateIssue_transition_fail"]
 }
 function test_deleteIssue() {
     log:printInfo("ACTION : deleteIssue()");

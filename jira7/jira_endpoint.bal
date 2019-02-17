@@ -17,6 +17,7 @@
 //
 
 import ballerina/http;
+import ballerina/log;
 
 # Jira Client object.
 # + jiraClient - The HTTP Client
@@ -229,6 +230,27 @@ public type Client client object {
     # + return - returns true if the process is successful or `JiraConnectorError` record
     public remote function addCommentToIssue(string issueIdOrKey, IssueComment comment)
                                returns boolean|JiraConnectorError;
+
+
+    # Nathan added:
+    # 
+    # Create an issue link in Jira.
+    # + link - The details of the link itself
+    # + return - return true if successful or an error
+    public remote function createIssueLink(IssueLinkRequest link) 
+                                returns boolean|JiraConnectorError;
+
+    # get details about a issue link in Jira.
+    # + key - the key of the jira issue
+    # + return - return json if successful or an error
+    public remote function getIssueLinks(string key) returns json|JiraConnectorError;
+
+    public remote function updateIssue(IssueUpdateRequest update)
+                        returns boolean|JiraConnectorError;
+    public remote function getIssueEditMeta(string key) returns json|JiraConnectorError;
+    public remote function getUser(string user) returns User[]|JiraConnectorError;
+    public remote function transitionIssue(IssueTransRequest transition) returns boolean|JiraConnectorError;
+    public remote function getTransitions(string key) returns json|JiraConnectorError;
 };
 
 # Represents the Jira Client Connector Endpoint configuration.
@@ -294,6 +316,8 @@ remote function Client.createProject(ProjectRequest newProject) returns Project|
         return errorToJiraConnectorError(jsonPayloadOut);
     } else {
         outRequest.setJsonPayload(jsonPayloadOut);
+
+        log:printInfo(jsonPayloadOut.toString());
 
         var httpResponseOut = self.jiraClient->post("/project", outRequest);
         //Evaluate http response for connection and server errors
@@ -667,6 +691,8 @@ remote function Client.createProjectCategory(ProjectCategoryRequest newCategory)
         return errorToJiraConnectorError(jsonPayloadOut);
     } else {
         outRequest.setJsonPayload(jsonPayloadOut);
+
+        log:printInfo(jsonPayloadOut.toString());
 
         var httpResponseOut = self.jiraClient->post("/projectCategory", outRequest);
         //Evaluate http response for connection and server errors
